@@ -1,18 +1,47 @@
 <?php
-// PHP Data Objects(PDO) Sample Code:
-try {
-    $conn = new PDO("sqlsrv:server = tcp:dbserverseminario1.database.windows.net,1433; Database = dbseminario1", "seminario1", "{your_password_here}");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}
-catch (PDOException $e) {
-    print("Error connecting to SQL Server.");
-    die(print_r($e));
-}
 
-// SQL Server Extension Sample Code:
-$connectionInfo = array("UID" => "seminario1@dbserverseminario1", "pwd" => "{your_password_here}", "Database" => "dbseminario1", "LoginTimeout" => 30, "Encrypt" => 1, "TrustServerCertificate" => 0);
-$serverName = "tcp:dbserverseminario1.database.windows.net,1433";
-$conn = sqlsrv_connect($serverName, $connectionInfo);
+ ReadData();
 
+    function OpenConnection()  
+    {  
+        try  
+        {  
+            $serverName = "tcp:dbserverseminario1.database.windows.net,1433";  
+            $connectionOptions = array("Database"=>"dbseminario1",  
+                "Uid"=>"seminario1", "PWD"=>"MyPassSeminario200925014word");  
+            $conn = sqlsrv_connect($serverName, $connectionOptions);  
+            if($conn == false)  
+                die(FormatErrors(sqlsrv_errors()));  
+        }  
+        catch(Exception $e)  
+        {  
+            echo("Error!");  
+        }  
+    }
+    
+function ReadData()  
+    {  
+        try  
+        {  
+            $conn = OpenConnection();  
+            $tsql = "SELECT nombre FROM comentarios";  
+            $getProducts = sqlsrv_query($conn, $tsql);  
+            if ($getProducts == FALSE)  
+                die(FormatErrors(sqlsrv_errors()));  
+            $productCount = 0;  
+            while($row = sqlsrv_fetch_array($getProducts, SQLSRV_FETCH_ASSOC))  
+            {  
+                echo($row['nombre']);  
+                echo("<br/>");  
+                $productCount++;  
+            }  
+            sqlsrv_free_stmt($getProducts);  
+            sqlsrv_close($conn);  
+        }  
+        catch(Exception $e)  
+        {  
+            echo("Error!");  
+        }  
+    }       
 ?>
-Error SQL SERVER V1.0 :-(
+
