@@ -8,7 +8,7 @@
         {  
             $serverName = "tcp:dbserverseminario1.database.windows.net,1433";  
             $connectionOptions = array("Database"=>"dbseminario1",  
-                "Uid"=>"seminario1", "PWD"=>"MyPassSeminario200925014word");  
+                "Uid"=>"seminario1", "PWD"=>"Seminario200925014");  
             $conn = sqlsrv_connect($serverName, $connectionOptions);  
             if($conn == false)  
                 die(FormatErrors(sqlsrv_errors()));  
